@@ -18,9 +18,7 @@ namespace Skinet.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration<BaseEntity>(new BaseEntityConfiguration());
             modelBuilder.ApplyConfiguration<Product>(new ProductEntityConfiguration());
-
             base.OnModelCreating(modelBuilder);
         }
 
