@@ -1,5 +1,4 @@
 ﻿using Skinet.Entities.Common;
-using System;
 
 namespace Skinet.Entities.Entities
 {
@@ -10,8 +9,8 @@ namespace Skinet.Entities.Entities
         public decimal Price { get; set; }
         public string PictureUrl { get; set; }
         public ProductType ProductType { get; set; }
-        public Guid ProductTypeId { get; set; }
+        public int ProductTypeId { get; set; }
         public ProductBrand ProductBrand { get; set; }
-        public Guid ProductBrandId { get; set; }
+        public int ProductBrandId { get; set; }
     }
 }

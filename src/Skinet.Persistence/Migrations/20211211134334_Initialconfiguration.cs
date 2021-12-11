@@ -11,7 +11,8 @@ namespace Skinet.Persistence.Migrations
                 name: "ProductBrands",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "TEXT", nullable: true),
@@ -27,7 +28,8 @@ namespace Skinet.Persistence.Migrations
                 name: "ProductTypes",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "TEXT", nullable: true),
@@ -43,13 +45,14 @@ namespace Skinet.Persistence.Migrations
                 name: "Products",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     ProductName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "TEXT", maxLength: 180, nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,0)", nullable: false),
                     PictureUrl = table.Column<string>(type: "TEXT", nullable: false),
-                    ProductTypeId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    ProductBrandId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    ProductTypeId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ProductBrandId = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "TEXT", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),

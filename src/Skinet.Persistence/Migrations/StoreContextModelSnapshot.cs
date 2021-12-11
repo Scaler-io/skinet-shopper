@@ -18,9 +18,9 @@ namespace Skinet.Persistence.Migrations
 
             modelBuilder.Entity("Skinet.Entities.Entities.Product", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
@@ -52,11 +52,11 @@ namespace Skinet.Persistence.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,0)");
 
-                    b.Property<Guid>("ProductBrandId")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("ProductBrandId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<Guid>("ProductTypeId")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("ProductTypeId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -72,9 +72,9 @@ namespace Skinet.Persistence.Migrations
 
             modelBuilder.Entity("Skinet.Entities.Entities.ProductBrand", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
@@ -103,9 +103,9 @@ namespace Skinet.Persistence.Migrations
 
             modelBuilder.Entity("Skinet.Entities.Entities.ProductType", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");

@@ -8,7 +8,7 @@ namespace Skinet.API.Extensions
 {
     public static class ApplicationHostExtensions
     {
-        public static IHost MigrateDatabase<TContext>(this IHost host,
+        public static IHost SeedDatabase<TContext>(this IHost host,
             Action<TContext, IServiceProvider> seeder, int? retry=0) where TContext : DbContext
         {
             var retryForAvailability = retry.Value;
@@ -31,7 +31,7 @@ namespace Skinet.API.Extensions
                     {
                         retryForAvailability++;
                         System.Threading.Thread.Sleep(2000);
-                        MigrateDatabase<TContext>(host, seeder, retryForAvailability);
+                        SeedDatabase<TContext>(host, seeder, retryForAvailability);
                     }
                 }
             }
