@@ -3,6 +3,7 @@ using Skinet.Entities.Common;
 using Skinet.Entities.Entities;
 using Skinet.Persistence.Configurations;
 using System;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,14 +15,20 @@ namespace Skinet.Persistence
         {
         }
 
+        // application dbsets
         public DbSet<Product> Products { get; set; }
+        public DbSet<ProductType> ProductTypes { get; set; }
+        public DbSet<ProductBrand> ProductBrands { get; set; }
 
+        // skinet entity configurations
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration<Product>(new ProductEntityConfiguration());
             base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
 
+
+        // deafule action setting on save changes
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             foreach(var entry in ChangeTracker.Entries<BaseEntity>())

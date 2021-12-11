@@ -6,9 +6,12 @@
 
   <ItemGroup>
     <Folder Include="Contracts\Infrastructure\" />
-    <Folder Include="Contracts\Persistence\" />
     <Folder Include="Features\" />
     <Folder Include="Behaviour\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Skinet.Entities\Skinet.Entities.csproj" />
   </ItemGroup>
 
 </Project>
