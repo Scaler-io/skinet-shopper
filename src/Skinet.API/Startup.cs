@@ -40,7 +40,9 @@ namespace Skinet.API
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Skinet.API v1"));
             }
 
+
             app.UseRouting();
+            app.UseStaticFiles();
 
             app.UseAuthorization();
 

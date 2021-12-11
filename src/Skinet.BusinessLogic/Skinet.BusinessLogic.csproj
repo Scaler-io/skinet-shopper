@@ -6,8 +6,14 @@
 
   <ItemGroup>
     <Folder Include="Contracts\Infrastructure\" />
-    <Folder Include="Features\" />
     <Folder Include="Behaviour\" />
+    <Folder Include="Features\Products\Command\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
