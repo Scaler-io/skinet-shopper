@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Skinet.BusinessLogic.Contracts.Persistence;
 using Skinet.BusinessLogic.Features.Products.Query.GetAllProducts;
-using Skinet.BusinessLogic.Mappings;
+using Skinet.BusinessLogic.Mappings.ProductMappings;
 using Skinet.Persistence.Repositories;
 
 namespace Skinet.API.Extensions
@@ -21,6 +21,8 @@ namespace Skinet.API.Extensions
 
             // binds data repository services
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IProductBrandRepository, ProductBrandRepository>();
+            services.AddScoped<IProductTypeRepository, ProductTypeRespository>();
             services.AddScoped(typeof(IAsyncRepository<>), typeof(BaseRepository<>));
 
             //  MediatR support

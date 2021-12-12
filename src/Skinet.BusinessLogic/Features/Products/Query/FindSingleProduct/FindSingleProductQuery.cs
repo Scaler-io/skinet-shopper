@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Skinet.BusinessLogic.Core;
-using Skinet.BusinessLogic.Core.Dtos;
-
+using Skinet.BusinessLogic.Core.Dtos.ProductDtos;
 
 namespace Skinet.BusinessLogic.Features.Products.Query.FindSingleProduct
 {

@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Configuration;
-using Skinet.BusinessLogic.Core.Dtos;
+using Skinet.BusinessLogic.Core.Dtos.ProductDtos;
 using Skinet.Entities.Entities;
 
-namespace Skinet.BusinessLogic.Mappings
+namespace Skinet.BusinessLogic.Mappings.ProductMappings
 {
     public class ProductImageUrlResolver : IValueResolver<Product, ProductToReturnDto, string>
     {

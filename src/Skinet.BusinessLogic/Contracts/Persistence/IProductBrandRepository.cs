@@ -1,8 +1,9 @@
 ﻿using Skinet.Entities.Entities;
 
+
 namespace Skinet.BusinessLogic.Contracts.Persistence
 {
-    public interface IProductRepository : IAsyncRepository<Product>
+    public interface IProductBrandRepository : IAsyncRepository<ProductBrand>
     {
     }
 }

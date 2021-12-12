@@ -2,7 +2,7 @@
 
 namespace Skinet.BusinessLogic.Contracts.Persistence
 {
-    public interface IProductRepository : IAsyncRepository<Product>
+    public interface IProductTypeRepository : IAsyncRepository<ProductType>
     {
     }
 }

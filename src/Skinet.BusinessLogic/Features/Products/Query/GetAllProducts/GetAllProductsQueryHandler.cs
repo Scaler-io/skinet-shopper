@@ -3,7 +3,7 @@ using MediatR;
 using Skinet.BusinessLogic.Contracts.Persistence;
 using Skinet.BusinessLogic.Contracts.Persistence.Specifications;
 using Skinet.BusinessLogic.Core;
-using Skinet.BusinessLogic.Core.Dtos;
+using Skinet.BusinessLogic.Core.Dtos.ProductDtos;
 using Skinet.Entities.Entities;
 using System.Collections.Generic;
 using System.Threading;
@@ -13,10 +13,10 @@ namespace Skinet.BusinessLogic.Features.Products.Query.GetAllProducts
 {
     public class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQuery, Result<IReadOnlyList<ProductToReturnDto>>>
     {
-        private readonly IAsyncRepository<Product> _productRepo;
+        private readonly IProductRepository _productRepo;
         private readonly IMapper _mapper;
 
-        public GetAllProductsQueryHandler(IAsyncRepository<Product> productRepo,
+        public GetAllProductsQueryHandler(IProductRepository productRepo,
                 IMapper mapper)
         {
             _productRepo = productRepo;

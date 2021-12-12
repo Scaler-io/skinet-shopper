@@ -1,28 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Skinet.Entities.Entities;
 using System.Collections.Generic;
 using System.Net;
 using Swashbuckle.AspNetCore.Annotations;
-using Skinet.BusinessLogic.Contracts.Persistence;
 using System.Threading.Tasks;
-using Skinet.BusinessLogic.Contracts.Persistence.Specifications;
 using Skinet.BusinessLogic.Features.Products.Query.GetAllProducts;
 using Skinet.BusinessLogic.Features.Products.Query.FindSingleProduct;
+using Skinet.BusinessLogic.Core.Dtos.ProductDtos;
 
 namespace Skinet.API.Controllers.v1
 {
     public class ProductController : BaseControllerv1
     {
-        private readonly IAsyncRepository<Product> _productRepo;
-
-        public ProductController(IAsyncRepository<Product> productRepo)
-        {
-            _productRepo = productRepo;
-        }
-
         [HttpGet(Name = "GetAllProducts")]
-        [ProducesResponseType(typeof(IEnumerable<Product>), (int)HttpStatusCode.OK)]
-        [SwaggerResponseAttribute((int)HttpStatusCode.OK, "returns all products", typeof(IEnumerable<Product>))]
+        [ProducesResponseType(typeof(IEnumerable<ProductToReturnDto>), (int)HttpStatusCode.OK)]
+        [SwaggerResponseAttribute((int)HttpStatusCode.OK, "returns all products", typeof(IEnumerable<ProductToReturnDto>))]
         [ProducesResponseType(typeof(void), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetAllProducts()
@@ -33,8 +24,8 @@ namespace Skinet.API.Controllers.v1
         }
 
         [HttpGet("{id}", Name = "GetProductById")]
-        [ProducesResponseType(typeof(IEnumerable<Product>), (int)HttpStatusCode.OK)]
-        [SwaggerResponseAttribute((int)HttpStatusCode.OK, "finds product by id", typeof(IEnumerable<Product>))]
+        [ProducesResponseType(typeof(IEnumerable<ProductToReturnDto>), (int)HttpStatusCode.OK)]
+        [SwaggerResponseAttribute((int)HttpStatusCode.OK, "finds product by id", typeof(IEnumerable<ProductToReturnDto>))]
         public async Task<IActionResult> GetProductById([FromRoute]int id)
         {
             var query = new FindSingleProductQuery { Id = id };
