@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Skinet.BusinessLogic.Features.Products.Query.GetAllProducts
 {
-    public class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQuery, Result<IReadOnlyList<ProductToReturnDto>>>
+    public class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQuery, Result<Pagination<ProductToReturnDto>>>
     {
         private readonly IProductRepository _productRepo;
         private readonly IMapper _mapper;
@@ -23,15 +23,22 @@ namespace Skinet.BusinessLogic.Features.Products.Query.GetAllProducts
             _mapper = mapper;
         }
 
-        public async Task<Result<IReadOnlyList<ProductToReturnDto>>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
+        public async Task<Result<Pagination<ProductToReturnDto>>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
         {
-            var spec = new ProductWithBrandAndTypeSpecification();
+            var productParams = request.ProductParams;
+            var spec = new ProductWithBrandAndTypeSpecification(productParams);
 
+            var countSpec = new ProductWithFilterForCountSpecification(productParams); 
+
+            var totalItems = await _productRepo.CountAsync(countSpec);
+            
             var products = await _productRepo.ListAsync(spec);
 
             var result =  _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturnDto>>(products);
 
-            return Result<IReadOnlyList<ProductToReturnDto>>.Success(result);
+            return Result<Pagination<ProductToReturnDto>>.Success(new Pagination<ProductToReturnDto>(
+                 productParams.PageIndex, productParams.PageSize, totalItems, result
+            ));
         }
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Skinet.BusinessLogic.Core;
+using Skinet.BusinessLogic.Core.Error;
 
 namespace Skinet.API.Controllers.v1
 {
@@ -15,11 +16,11 @@ namespace Skinet.API.Controllers.v1
 
         protected IActionResult HandleResult<T>(Result<T> result)
         {
-            if (result == null) return NotFound(result);
-            if (result.Value == null && result.IsSuccess) return NotFound();
+            if (result == null) return NotFound(new ApiResponse(404));
+            if (result.Value == null && result.IsSuccess) return NotFound(new ApiResponse(404));
             if (result.Value != null && result.IsSuccess) return Ok(result.Value);
 
-            return BadRequest(result.Error);
+            return BadRequest(new ApiResponse(400, result.Error));
         }
     }
 }

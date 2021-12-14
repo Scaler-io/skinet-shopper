@@ -31,6 +31,15 @@ namespace Skinet.API.Extensions
             // automapper support
             services.AddAutoMapper(typeof(ProductMapping).Assembly);
 
+            // Cors support
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy("SkinetCorsPolicy", policy =>
+                {
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200");
+                });
+            });
+
             return services;
         }
     }
