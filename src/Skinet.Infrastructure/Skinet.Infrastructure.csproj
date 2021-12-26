@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Skinet.BusinessLogic\Skinet.BusinessLogic.csproj" />
+    <ProjectReference Include="..\Skinet.Shared\Skinet.Shared.csproj" />
   </ItemGroup>
 
 </Project>

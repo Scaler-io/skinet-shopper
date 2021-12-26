@@ -8,9 +8,9 @@ namespace Skinet.API.Extensions
     {
         public static IServiceCollection AddRedisCacheServices(this IServiceCollection services, IConfiguration config)
         {
-            services.AddSingleton<ConnectionMultiplexer>(options =>
+            services.AddSingleton<IConnectionMultiplexer>(options =>
             {
-                var configuration = ConfigurationOptions.Parse(config.GetConnectionString("Redis"), true);
+                var configuration = ConfigurationOptions.Parse(config.GetConnectionString("BasketDb"), true);
                 return ConnectionMultiplexer.Connect(configuration);
             });
             return services;

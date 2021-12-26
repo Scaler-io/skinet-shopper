@@ -19,17 +19,18 @@ namespace Skinet.API.Extensions
             // api versioning settings
             services.AddApiVersioning(options =>
             {
-                options.DefaultApiVersion = Microsoft.AspNetCore.Mvc.ApiVersion.Default;
+                options.DefaultApiVersion = ApiVersion.Default;
                 options.AssumeDefaultVersionWhenUnspecified = true;
                 options.ReportApiVersions = true;
             });
 
             // binds data repository services
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IBasketService, BasketService>();
             services.AddScoped<IProductBrandRepository, ProductBrandRepository>();
             services.AddScoped<IProductTypeRepository, ProductTypeRespository>();
             services.AddScoped(typeof(IAsyncRepository<>), typeof(BaseRepository<>));
-            services.AddScoped<IBasketRepository, BasketRepository>();
+            
 
             //  MediatR support
             services.AddMediatR(typeof(GetAllProductsQuery).Assembly);
