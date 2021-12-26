@@ -24,6 +24,8 @@ namespace Skinet.API
             services.AddApplicationServices();
             
             services.AddSwaggerServices();
+
+            services.AddRedisCacheServices(_configuration);
             
             services.AddControllers();
 

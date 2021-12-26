@@ -5,8 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Contracts\Infrastructure\" />
-    <Folder Include="Behaviour\" />
+    <Compile Remove="Behaviour\**" />
+    <EmbeddedResource Remove="Behaviour\**" />
+    <None Remove="Behaviour\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Features\Products\Command\" />
   </ItemGroup>
 

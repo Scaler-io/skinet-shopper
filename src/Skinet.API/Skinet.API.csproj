@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Skinet.BusinessLogic\Skinet.BusinessLogic.csproj" />
+    <ProjectReference Include="..\Skinet.Infrastructure\Skinet.Infrastructure.csproj" />
     <ProjectReference Include="..\Skinet.Persistence\Skinet.Persistence.csproj" />
   </ItemGroup>
 
