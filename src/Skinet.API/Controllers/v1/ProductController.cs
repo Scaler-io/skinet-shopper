@@ -8,11 +8,20 @@ using Skinet.BusinessLogic.Features.Products.Query.FindSingleProduct;
 using Skinet.BusinessLogic.Core.Dtos.ProductDtos;
 using Skinet.BusinessLogic.Contracts.Persistence.Specifications;
 using Skinet.BusinessLogic.Core;
+using Microsoft.Extensions.Logging;
+using Skinet.Shared.LoggerExtensions;
 
 namespace Skinet.API.Controllers.v1
 {
     public class ProductController : BaseControllerv1
     {
+        private readonly ILogger<ProductController> _logger;
+
+        public ProductController(ILogger<ProductController> logger)
+        {
+            _logger = logger;
+        }
+
         [HttpGet(Name = "GetAllProducts")]
         [ProducesResponseType(typeof(Pagination<ProductToReturnDto>), (int)HttpStatusCode.OK)]
         [SwaggerResponseAttribute((int)HttpStatusCode.OK, "returns all products", typeof(Pagination<ProductToReturnDto>))]
@@ -20,8 +29,12 @@ namespace Skinet.API.Controllers.v1
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetAllProducts([FromQuery]ProductSpecParams productParams)
         {
+            _logger.Here().Controller(typeof(ProductController).Name, nameof(GetAllProducts)).HttpGet();
+
             var query = new GetAllProductsQuery(productParams);
             var products = await Mediator.Send(query);
+
+            _logger.Exited(typeof(ProductController).Name, nameof(GetAllProducts));
             return HandleResult(products);
         }
 
@@ -30,8 +43,13 @@ namespace Skinet.API.Controllers.v1
         [SwaggerResponseAttribute((int)HttpStatusCode.OK, "finds product by id", typeof(IEnumerable<ProductToReturnDto>))]
         public async Task<IActionResult> GetProductById([FromRoute]int id)
         {
+            _logger.Here().Controller(typeof(ProductController).Name, nameof(GetProductById)).WithId(id).HttpGet();
+
             var query = new FindSingleProductQuery { Id = id };
             var product = await Mediator.Send(query);
+
+            _logger.Exited(typeof(ProductController).Name, nameof(GetProductById));
+
             return HandleResult(product);
         }
 

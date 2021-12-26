@@ -23,11 +23,11 @@ namespace Skinet.API
             
             services.AddApplicationServices();
             
+            services.AddRedisCacheServices(_configuration);
+            
             services.AddSwaggerServices();
-            
-            services.AddControllers();
 
-            
+            services.AddControllers(); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

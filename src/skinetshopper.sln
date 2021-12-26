@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skinet.Entities", "Skinet.E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skinet.Infrastructure", "Skinet.Infrastructure\Skinet.Infrastructure.csproj", "{07D66596-A210-4606-8964-DB3F62530B43}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skinet.Shared", "Skinet.Shared\Skinet.Shared.csproj", "{F61C603A-517C-473E-9696-85EF2D26EBA0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{07D66596-A210-4606-8964-DB3F62530B43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07D66596-A210-4606-8964-DB3F62530B43}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07D66596-A210-4606-8964-DB3F62530B43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F61C603A-517C-473E-9696-85EF2D26EBA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F61C603A-517C-473E-9696-85EF2D26EBA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F61C603A-517C-473E-9696-85EF2D26EBA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F61C603A-517C-473E-9696-85EF2D26EBA0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
