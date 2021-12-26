@@ -7,14 +7,15 @@ using Skinet.BusinessLogic.Features.Products.Query.GetAllProducts;
 using Skinet.BusinessLogic.Features.Products.Query.FindSingleProduct;
 using Skinet.BusinessLogic.Core.Dtos.ProductDtos;
 using Skinet.BusinessLogic.Contracts.Persistence.Specifications;
+using Skinet.BusinessLogic.Core;
 
 namespace Skinet.API.Controllers.v1
 {
     public class ProductController : BaseControllerv1
     {
         [HttpGet(Name = "GetAllProducts")]
-        [ProducesResponseType(typeof(IEnumerable<ProductToReturnDto>), (int)HttpStatusCode.OK)]
-        [SwaggerResponseAttribute((int)HttpStatusCode.OK, "returns all products", typeof(IEnumerable<ProductToReturnDto>))]
+        [ProducesResponseType(typeof(Pagination<ProductToReturnDto>), (int)HttpStatusCode.OK)]
+        [SwaggerResponseAttribute((int)HttpStatusCode.OK, "returns all products", typeof(Pagination<ProductToReturnDto>))]
         [ProducesResponseType(typeof(void), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetAllProducts([FromQuery]ProductSpecParams productParams)

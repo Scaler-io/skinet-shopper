@@ -27,7 +27,7 @@ namespace Skinet.API
                     var context = services.GetRequiredService<StoreContext>();
                     await context.Database.MigrateAsync();
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     logger.LogError(e, "An error occured while migrating database associated with {DbContext}"
                         , typeof(StoreContext).Name);
