@@ -16,6 +16,9 @@ namespace Skinet.API.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
+
+            services.AddControllers();
+
             // api versioning settings
             services.AddApiVersioning(options =>
             {

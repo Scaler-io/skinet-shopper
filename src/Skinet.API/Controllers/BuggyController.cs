@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 namespace Skinet.API.Controllers
 {
     [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion("1")]
     [ApiController]
     public class BuggyController : ControllerBase
     {
