@@ -12,9 +12,9 @@ namespace Skinet.Persistence
 {
     public class StoreContext : DbContext
     {
-        public StoreContext(DbContextOptions options) : base(options)
-        {
-        }
+        public StoreContext(DbContextOptions options) 
+        : base(options)
+        {}
 
         // application dbsets
         public DbSet<Product> Products { get; set; }
