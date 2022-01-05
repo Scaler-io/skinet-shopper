@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Skinet.Entities.Entities.Identity;
 using Skinet.Persistence.Identity;
 
 
@@ -12,10 +14,13 @@ namespace Skinet.API.Extensions
             IConfiguration configuration    
         )
         {
-            services.AddDbContext<SkinetIdentityDbContext>(options =>
-            {
-                options.UseSqlite(configuration.GetConnectionString("IdentityConnection"));
-            });
+            var builder = services.AddIdentityCore<SkinetUser>();
+            builder = new IdentityBuilder(builder.UserType, builder.Services);
+            builder.AddEntityFrameworkStores<SkinetIdentityDbContext>();
+            builder.AddSignInManager<SignInManager<SkinetUser>>();
+
+            services.AddAuthentication();
+
             return services;
         }
     }

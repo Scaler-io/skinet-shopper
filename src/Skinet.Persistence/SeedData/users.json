@@ -1,0 +1,67 @@
+[
+  {
+    "DisplayName": "Casey",
+    "Email": "casey@test.com",
+    "UserName": "casey@test.com",
+    "Address": {
+      "FirstName": "Whitaker",
+      "LastName": "Jenkins",
+      "Street": "Clifford Place",
+      "City": "Emory",
+      "State": "Maine",
+      "ZipCode": 96674
+    }
+  },
+  {
+    "DisplayName": "Salas",
+    "Email": "salas@test.com",
+    "UserName": "salas@test.com",
+    "Address": {
+      "FirstName": "Leonor",
+      "LastName": "Bruce",
+      "Street": "Schenck Avenue",
+      "City": "Balm",
+      "State": "New Hampshire",
+      "ZipCode": 96558
+    }
+  },
+  {
+    "DisplayName": "Guthrie",
+    "Email": "guthrie@test.com",
+    "UserName": "guthrie@test.com",
+    "Address": {
+      "FirstName": "English",
+      "LastName": "Ramos",
+      "Street": "Driggs Avenue",
+      "City": "Dubois",
+      "State": "New Jersey",
+      "ZipCode": 98811
+    }
+  },
+  {
+    "DisplayName": "Lily",
+    "Email": "lily@test.com",
+    "UserName": "lily@test.com",
+    "Address": {
+      "FirstName": "Mcknight",
+      "LastName": "Charles",
+      "Street": "Meadow Street",
+      "City": "Cumberland",
+      "State": "Louisiana",
+      "ZipCode": 94944
+    }
+  },
+  {
+    "DisplayName": "Hood",
+    "Email": "hood@test.com",
+    "UserName": "hood@test.com",
+    "Address": {
+      "FirstName": "Fanny",
+      "LastName": "Myers",
+      "Street": "Boerum Street",
+      "City": "Hackneyville",
+      "State": "Kansas",
+      "ZipCode": 96077
+    }
+  }
+]
