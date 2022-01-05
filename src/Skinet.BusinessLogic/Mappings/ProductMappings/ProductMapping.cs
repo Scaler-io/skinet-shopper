@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Skinet.BusinessLogic.Core.Dtos;
-using Skinet.BusinessLogic.Core.Dtos.BrandDtos;
 using Skinet.BusinessLogic.Core.Dtos.ProductDtos;
 using Skinet.Entities.Entities;
 

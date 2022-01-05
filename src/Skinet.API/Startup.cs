@@ -21,6 +21,8 @@ namespace Skinet.API
         {
             services.AddDatabaseServices(_configuration);
             
+            services.AddIdentityServices(_configuration);
+
             services.AddApplicationServices();
             
             services.AddRedisCacheServices(_configuration);
