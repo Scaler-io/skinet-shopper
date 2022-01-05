@@ -7,9 +7,8 @@ using Skinet.BusinessLogic.Core.Error;
 namespace Skinet.API.Controllers.v1
 {
     [Route("api/v{version:apiVersion}/[controller]")]
-    [ApiVersion("1")]
     [ApiController]
-    public class BaseControllerv1 : ControllerBase
+    public class BaseController : ControllerBase
     {
         private IMediator _mediator;
         protected IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetService<IMediator>();

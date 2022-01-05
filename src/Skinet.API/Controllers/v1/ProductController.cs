@@ -13,7 +13,8 @@ using Skinet.Shared.LoggerExtensions;
 
 namespace Skinet.API.Controllers.v1
 {
-    public class ProductController : BaseControllerv1
+    [ApiVersion("1")]
+    public class ProductController : BaseController
     {
         private readonly ILogger<ProductController> _logger;
 

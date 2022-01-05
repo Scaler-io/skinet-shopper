@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 
 namespace Skinet.API.Controllers.v1
 {
-    public class BasketController : BaseControllerv1
+    [ApiVersion("1")]
+    public class BasketController : BaseController
     {
         private readonly IBasketService _basketService;
         private readonly ILogger<BasketController> _logger;
