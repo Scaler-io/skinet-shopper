@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Skinet.BusinessLogic.Contracts.Infrastructure;
+using Skinet.BusinessLogic.Core.Dtos.Basket;
 using Skinet.BusinessLogic.Core.Error;
 using Skinet.Entities.Entities;
 using Skinet.Shared.LoggerExtensions;
@@ -14,11 +16,13 @@ namespace Skinet.API.Controllers.v1
     {
         private readonly IBasketService _basketService;
         private readonly ILogger<BasketController> _logger;
+        private readonly IMapper _mapper;
 
-        public BasketController(IBasketService basketService, ILogger<BasketController> logger)
+        public BasketController(IBasketService basketService, ILogger<BasketController> logger, IMapper mapper)
         {
             _basketService = basketService;
             _logger = logger;
+            _mapper = mapper;
         }
 
         [HttpGet("{id}")]
@@ -38,11 +42,13 @@ namespace Skinet.API.Controllers.v1
         [HttpPost]
         [ProducesResponseType(typeof(CustomerBasket), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ApiException), (int)HttpStatusCode.InternalServerError)]
-        public async Task<IActionResult> CreateOrUpdateBasket([FromBody] CustomerBasket basket)
+        public async Task<IActionResult> CreateOrUpdateBasket([FromBody] CustomerBasketDto basket)
         {
             _logger.Here().Controller(nameof(BasketController), nameof(CreateOrUpdateBasket)).HttpPost();
 
-            var result = await _basketService.UpsertBasketAsync(basket);
+            var customerBasket = _mapper.Map<CustomerBasket>(basket);
+
+            var result = await _basketService.UpsertBasketAsync(customerBasket);
 
             _logger.Exited();
 
