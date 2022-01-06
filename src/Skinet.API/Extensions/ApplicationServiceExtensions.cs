@@ -13,6 +13,7 @@ using Skinet.Infrastructure.Identity;
 using Skinet.Persistence.Repositories;
 using System.Linq;
 
+
 namespace Skinet.API.Extensions
 {
     public static class ApplicationServiceExtensions
@@ -38,7 +39,6 @@ namespace Skinet.API.Extensions
             services.AddScoped<IProductTypeRepository, ProductTypeRespository>();
             services.AddScoped(typeof(IAsyncRepository<>), typeof(BaseRepository<>));
             services.AddScoped<IAuthService, AuthService>();
-            
 
             //  MediatR support
             services.AddMediatR(typeof(GetAllProductsQuery).Assembly);
