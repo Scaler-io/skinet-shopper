@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Skinet.Persistence;
+using Skinet.Persistence.Identity;
 
 namespace Skinet.API.Extensions
 {
@@ -13,6 +14,12 @@ namespace Skinet.API.Extensions
             {
                 options.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
             });
+
+            services.AddDbContext<SkinetIdentityDbContext>(options =>
+            {
+                options.UseSqlite(configuration.GetConnectionString("IdentityConnection"));
+            });
+
             return services;
         }
     }

@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 
 namespace Skinet.API.Controllers.v1
 {
-    public class BrandController : BaseControllerv1
+    [ApiVersion("1")]
+    public class BrandController : BaseController
     {
         [HttpGet(Name = "GetAllProductBrands")]
         [ProducesResponseType(typeof(IReadOnlyList<BrandToReturnDto>), (int)HttpStatusCode.OK)]

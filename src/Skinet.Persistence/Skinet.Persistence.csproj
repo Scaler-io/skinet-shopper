@@ -21,8 +21,4 @@
     <ProjectReference Include="..\Skinet.Entities\Skinet.Entities.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="SeedData\" />
-  </ItemGroup>
-
 </Project>

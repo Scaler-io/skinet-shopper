@@ -10,10 +10,12 @@ using Skinet.BusinessLogic.Contracts.Persistence.Specifications;
 using Skinet.BusinessLogic.Core;
 using Microsoft.Extensions.Logging;
 using Skinet.Shared.LoggerExtensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Skinet.API.Controllers.v1
 {
-    public class ProductController : BaseControllerv1
+    [ApiVersion("1")]
+    public class ProductController : BaseController
     {
         private readonly ILogger<ProductController> _logger;
 
@@ -38,6 +40,7 @@ namespace Skinet.API.Controllers.v1
             return HandleResult(products);
         }
 
+        [Authorize]
         [HttpGet("{id}", Name = "GetProductById")]
         [ProducesResponseType(typeof(IEnumerable<ProductToReturnDto>), (int)HttpStatusCode.OK)]
         [SwaggerResponseAttribute((int)HttpStatusCode.OK, "finds product by id", typeof(IEnumerable<ProductToReturnDto>))]
