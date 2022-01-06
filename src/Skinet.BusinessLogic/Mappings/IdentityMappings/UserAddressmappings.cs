@@ -5,9 +5,9 @@ using Skinet.Entities.Entities.Identity;
 
 namespace Skinet.BusinessLogic.Mappings.IdentityMappings
 {
-    public class UserAddressmappings : Profile
+    public class UserAddressMappings : Profile
     {
-        public UserAddressmappings()
+        public UserAddressMappings()
         {
             CreateMap<Address, UserAddressDto>().ReverseMap();
         }

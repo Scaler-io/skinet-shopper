@@ -137,7 +137,7 @@ namespace Skinet.Infrastructure.Identity
         {
             _logger.Here(nameof(AuthService), nameof(UpdateAddressAsync));
 
-            var user = await _userManager.FindByEmailFromClaimsPrincipleAsync(_httpContextAccessor.HttpContext.User);
+            var user = await _userManager.FindByEmailWithAddressAsync(_httpContextAccessor.HttpContext.User);
 
             user.Address = _mapper.Map<Address>(address);
 
