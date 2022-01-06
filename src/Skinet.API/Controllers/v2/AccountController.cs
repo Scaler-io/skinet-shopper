@@ -68,21 +68,7 @@ namespace Skinet.API.Controllers.v2
 
             return HandleResult(result);
         }
-    
-        [HttpGet("emailexists")]
-        [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(ApiException), (int)HttpStatusCode.InternalServerError)]
-        public async Task<IActionResult> CheckEmailExists([FromQuery] string email)
-        {
-            _logger.Here().Controller(nameof(AccountController), nameof(CheckEmailExists)).HttpGet();
-
-            var result = await _authService.CheckEmailExistsAsync(email);
-
-            _logger.Exited();
-
-            return HandleResult(result);
-        }
-
+   
         [Authorize]
         [HttpGet("address")]
         [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
@@ -90,7 +76,7 @@ namespace Skinet.API.Controllers.v2
         [ProducesResponseType(typeof(ApiException), (int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> GetUserAddress()
         {
-            _logger.Here().Controller(nameof(AccountController), nameof(CheckEmailExists)).HttpGet();
+            _logger.Here().Controller(nameof(AccountController), nameof(GetUserAddress)).HttpGet();
 
             var result = await _authService.GetUserAddressAsync();
 

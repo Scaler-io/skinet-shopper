@@ -32,12 +32,12 @@ namespace Skinet.Infrastructure.Identity
             _mapper = mapper;
         }
 
-        public async Task<Result<bool>> CheckEmailExistsAsync(string email)
+        private async Task<bool> CheckEmailExistsAsync(string email)
         {
             _logger.Here(nameof(AuthService), nameof(CheckEmailExistsAsync));
             var result = await _userManager.FindByEmailAsync(email) != null;
             _logger.Exited();
-            return Result<bool>.Success(result);
+            return result;
         }
 
         public async Task<Result<AuthResponseDto>> GetAuthUserAsync()
@@ -104,6 +104,13 @@ namespace Skinet.Infrastructure.Identity
         public async Task<Result<AuthResponseDto>> SignupAsync(SignupRequestDto request)
         {
             _logger.Here(nameof(AuthService), nameof(SignupAsync));
+
+            var isEmailExist = await CheckEmailExistsAsync(request.Email);
+            if (isEmailExist)
+            {
+                _logger.LogError($"Signup failed. Email {request.Email} already exists");
+                return Result<AuthResponseDto>.Failure("EmailAlreadyExists");
+            }
 
             var user = new SkinetUser
             {
