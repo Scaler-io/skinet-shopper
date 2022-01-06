@@ -1,12 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Skinet.BusinessLogic.Core.Error;
 using Skinet.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 
 namespace Skinet.API.Controllers
 {
@@ -19,6 +14,13 @@ namespace Skinet.API.Controllers
         public BuggyController(StoreContext context)
         {
             _context = context;
+        }
+
+        [HttpGet("testAuth")]
+        [Authorize]
+        public ActionResult<string> TestAuth()
+        {
+            return "secret content";
         }
 
         [HttpGet("notfound")]

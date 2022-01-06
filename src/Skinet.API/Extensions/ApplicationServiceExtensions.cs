@@ -7,6 +7,7 @@ using Skinet.BusinessLogic.Core.Error;
 using Skinet.BusinessLogic.Features.Products.Query.GetAllProducts;
 using Skinet.BusinessLogic.Mappings.ProductMappings;
 using Skinet.Infrastructure.Basket;
+using Skinet.Infrastructure.Identity;
 using Skinet.Persistence.Repositories;
 using System.Linq;
 
@@ -28,11 +29,13 @@ namespace Skinet.API.Extensions
             });
 
             // binds data repository services
+            services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IBasketService, BasketService>();
             services.AddScoped<IProductBrandRepository, ProductBrandRepository>();
             services.AddScoped<IProductTypeRepository, ProductTypeRespository>();
             services.AddScoped(typeof(IAsyncRepository<>), typeof(BaseRepository<>));
+            services.AddScoped<IAuthService, AuthService>();
             
 
             //  MediatR support

@@ -45,6 +45,8 @@ namespace Skinet.API
 
             app.UseCors("SkinetCorsPolicy");
 
+            app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
