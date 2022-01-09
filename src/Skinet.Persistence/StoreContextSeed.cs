@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Skinet.Entities.Entities;
+using Skinet.Entities.Entities.OrderAggregate;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,8 +30,14 @@ namespace Skinet.Persistence
             {
                 await context.Products.AddRangeAsync(GetBaseProducts(logger));
                 await context.SaveChangesAsync();
-            }  
-            
+            }
+
+            if (!await context.DeliveryMethods.AnyAsync())
+            {
+                await context.DeliveryMethods.AddRangeAsync(GetDeleiveryMethods(logger));
+                await context.SaveChangesAsync();
+            }
+
             logger.LogInformation("Seed database associated with context {DbcontextName}", typeof(StoreContext).Name);
         }
 
@@ -84,5 +91,22 @@ namespace Skinet.Persistence
 
             return null;
         } 
+    
+        private static IEnumerable<DeliveryMethod> GetDeleiveryMethods(ILogger<StoreContextSeed> logger)
+        {
+            try
+            {
+                var deliveryData = File.ReadAllText("../Skinet.Persistence/SeedData/delivery.json");
+                var deliveryMethods = JsonConvert.DeserializeObject<List<DeliveryMethod>>(deliveryData);
+                logger.LogInformation("delivery method data loaded from delivery.json file");
+                return deliveryMethods;
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, "Unable to load delivery method data from delivery.json file");
+            }
+
+            return null;
+        }
     }
 }

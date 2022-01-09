@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Skinet.Entities.Common;
 using Skinet.Entities.Entities;
+using Skinet.Entities.Entities.OrderAggregate;
 using Skinet.Persistence.Configurations;
 using System;
 using System.Linq;
@@ -20,6 +21,9 @@ namespace Skinet.Persistence
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductType> ProductTypes { get; set; }
         public DbSet<ProductBrand> ProductBrands { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<DeliveryMethod> DeliveryMethods { get; set; }
 
         // skinet entity configurations
         protected override void OnModelCreating(ModelBuilder modelBuilder)
