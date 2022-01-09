@@ -40,7 +40,7 @@ namespace Skinet.API.Controllers.v1
             return HandleResult(products);
         }
 
-        [Authorize]
+
         [HttpGet("{id}", Name = "GetProductById")]
         [ProducesResponseType(typeof(IEnumerable<ProductToReturnDto>), (int)HttpStatusCode.OK)]
         [SwaggerResponseAttribute((int)HttpStatusCode.OK, "finds product by id", typeof(IEnumerable<ProductToReturnDto>))]

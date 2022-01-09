@@ -32,14 +32,6 @@ namespace Skinet.Infrastructure.Identity
             _mapper = mapper;
         }
 
-        private async Task<bool> CheckEmailExistsAsync(string email)
-        {
-            _logger.Here(nameof(AuthService), nameof(CheckEmailExistsAsync));
-            var result = await _userManager.FindByEmailAsync(email) != null;
-            _logger.Exited();
-            return result;
-        }
-
         public async Task<Result<AuthResponseDto>> GetAuthUserAsync()
         {
             _logger.Here(nameof(AuthService), nameof(GetAuthUserAsync));
@@ -105,13 +97,6 @@ namespace Skinet.Infrastructure.Identity
         {
             _logger.Here(nameof(AuthService), nameof(SignupAsync));
 
-            var isEmailExist = await CheckEmailExistsAsync(request.Email);
-            if (isEmailExist)
-            {
-                _logger.LogError($"Signup failed. Email {request.Email} already exists");
-                return Result<AuthResponseDto>.Failure("EmailAlreadyExists");
-            }
-
             var user = new SkinetUser
             {
                 Email = request.Email,
@@ -160,6 +145,20 @@ namespace Skinet.Infrastructure.Identity
             _logger.Exited();
 
             return Result<UserAddressDto>.Success(_mapper.Map<UserAddressDto>(user.Address));
+        }
+
+        public async Task<bool> CheckEmailExistsAsync(string email)
+        {
+            _logger.Here(nameof(AuthService), nameof(CheckEmailExistsAsync));
+
+            var result = await _userManager.FindByEmailAsync(email) != null;
+
+            if(result)
+                _logger.LogError($"Signup failed. Email {email} already exists");
+
+            _logger.Exited();
+
+            return result;
         }
     }
 }

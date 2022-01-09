@@ -11,5 +11,6 @@ namespace Skinet.BusinessLogic.Contracts.Infrastructure
         Task<Result<AuthResponseDto>> GetAuthUserAsync();
         Task<Result<UserAddressDto>> GetUserAddressAsync();
         Task<Result<UserAddressDto>> UpdateAddressAsync(UserAddressDto address);
+        Task<bool> CheckEmailExistsAsync(string email);
     }
 }

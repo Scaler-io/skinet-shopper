@@ -46,6 +46,15 @@ namespace Skinet.API.Controllers.v2
         {
             _logger.Here().Controller(nameof(AccountController), nameof(SignUpUser)).HttpPost();
 
+            if(CheckEmailExist(request.Email).Result.Value)
+            {
+                return UnprocessableEntity(new ApiValidationErrorResponse
+                {
+                    Errors = new[] { "Email is already taken "}
+                });
+            }
+
+
             var result = await _authService.SignupAsync(request);
 
             _logger.Exited();
@@ -69,6 +78,12 @@ namespace Skinet.API.Controllers.v2
             return HandleResult(result);
         }
    
+        [HttpGet("IsEmailTaken")]
+        public async Task<ActionResult<bool>> CheckEmailExist([FromQuery] string email)
+        {
+            return await _authService.CheckEmailExistsAsync(email);
+        }
+
         [Authorize]
         [HttpGet("address")]
         [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]

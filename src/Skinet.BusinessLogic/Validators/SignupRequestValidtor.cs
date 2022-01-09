@@ -1,12 +1,14 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Identity;
 using Skinet.BusinessLogic.Core.Dtos.IdentityDtos;
-
+using Skinet.Entities.Entities.Identity;
 
 namespace Skinet.BusinessLogic.Validators
 {
     public class SignupRequestValidtor : AbstractValidator<SignupRequestDto>
     {
-        public SignupRequestValidtor()
+        private readonly UserManager<SkinetUser> _userManager;
+        public SignupRequestValidtor(UserManager<SkinetUser> userManager)
         {
             RuleFor(x => x.DisplayName)
                 .NotEmpty()
@@ -26,8 +28,11 @@ namespace Skinet.BusinessLogic.Validators
                 .NotEmpty()
                 .WithMessage("Password is required")
                 .NotNull()
-                .Matches("(?=^.{6,10}$)(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?/&gt;.&lt;,])(?!.*\\s).*$")
+                .Matches("(?=^.{6,15}$)(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?/&gt;.&lt;,])(?!.*\\s).*$")
                 .WithMessage("Please select a strong password");
+            
+            _userManager = userManager;
         }
+
     }
 }
