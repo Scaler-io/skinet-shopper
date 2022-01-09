@@ -7,6 +7,7 @@ using Skinet.Entities.Entities;
 using Skinet.BusinessLogic.Core;
 using Microsoft.Extensions.Logging;
 using Skinet.Shared.LoggerExtensions;
+using Skinet.BusinessLogic.Core.Dtos.Basket;
 
 namespace Skinet.Infrastructure.Basket
 {

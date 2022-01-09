@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Skinet.BusinessLogic.Core;
 using Skinet.BusinessLogic.Core.Error;
+using System;
 
 namespace Skinet.API.Controllers
 {
@@ -20,8 +21,16 @@ namespace Skinet.API.Controllers
             if (result.Value != null && result.IsSuccess) return Ok(result.Value);
 
             if (result.Error == "Unauthorised") return Unauthorized(new ApiResponse(401));
+            if (result.Error == "EmailAlreadyExists") return UnprocessableEntity(new ApiValidationErrorResponse { 
+                Errors = new [] { "Email is already taken" }
+            });
 
             return BadRequest(new ApiResponse(400, result.Error));
+        }
+
+        private IActionResult ApiValidationErrorResponse(string[] vs)
+        {
+            throw new NotImplementedException();
         }
     }
 }

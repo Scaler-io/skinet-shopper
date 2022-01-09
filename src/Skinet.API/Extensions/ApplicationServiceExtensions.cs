@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation.AspNetCore;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Skinet.BusinessLogic.Contracts.Infrastructure;
@@ -6,10 +7,12 @@ using Skinet.BusinessLogic.Contracts.Persistence;
 using Skinet.BusinessLogic.Core.Error;
 using Skinet.BusinessLogic.Features.Products.Query.GetAllProducts;
 using Skinet.BusinessLogic.Mappings.ProductMappings;
+using Skinet.BusinessLogic.Validators;
 using Skinet.Infrastructure.Basket;
 using Skinet.Infrastructure.Identity;
 using Skinet.Persistence.Repositories;
 using System.Linq;
+
 
 namespace Skinet.API.Extensions
 {
@@ -36,10 +39,14 @@ namespace Skinet.API.Extensions
             services.AddScoped<IProductTypeRepository, ProductTypeRespository>();
             services.AddScoped(typeof(IAsyncRepository<>), typeof(BaseRepository<>));
             services.AddScoped<IAuthService, AuthService>();
-            
 
             //  MediatR support
             services.AddMediatR(typeof(GetAllProductsQuery).Assembly);
+
+            services.AddFluentValidation(cfg =>
+            {
+                cfg.RegisterValidatorsFromAssembly(typeof(UserAddressValidator).Assembly);
+            });
 
             // automapper support
             services.AddAutoMapper(typeof(ProductMapping).Assembly);

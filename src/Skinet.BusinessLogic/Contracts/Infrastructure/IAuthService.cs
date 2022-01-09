@@ -9,8 +9,8 @@ namespace Skinet.BusinessLogic.Contracts.Infrastructure
         Task<Result<AuthResponseDto>> SigninAsync(SigninRequestDto request);
         Task<Result<AuthResponseDto>> SignupAsync(SignupRequestDto request);
         Task<Result<AuthResponseDto>> GetAuthUserAsync();
-        Task<Result<bool>> CheckEmailExistsAsync(string email);
         Task<Result<UserAddressDto>> GetUserAddressAsync();
         Task<Result<UserAddressDto>> UpdateAddressAsync(UserAddressDto address);
+        Task<bool> CheckEmailExistsAsync(string email);
     }
 }
