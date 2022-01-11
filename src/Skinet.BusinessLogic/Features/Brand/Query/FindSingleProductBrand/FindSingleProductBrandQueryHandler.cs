@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Skinet.BusinessLogic.Contracts.Persistence;
 using Skinet.BusinessLogic.Core;
 using Skinet.BusinessLogic.Core.Dtos.BrandDtos;
+using Skinet.Entities.Entities;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,11 +12,11 @@ namespace Skinet.BusinessLogic.Features.Brand.Query.FindSingleProductBrand
 {
     public class FindSingleProductBrandQueryHandler : IRequestHandler<FindSingleProductBrandQuery, Result<BrandToReturnDto>>
     {
-        private readonly IProductBrandRepository _productBrandRepo;
+        private readonly IAsyncRepository<ProductBrand> _productBrandRepo;
         private readonly ILogger<FindSingleProductBrandQueryHandler> _logger;
         private readonly IMapper _mapper;
 
-        public FindSingleProductBrandQueryHandler(IProductBrandRepository productBrandRepo, 
+        public FindSingleProductBrandQueryHandler(IAsyncRepository<ProductBrand> productBrandRepo, 
             ILogger<FindSingleProductBrandQueryHandler> logger, 
             IMapper mapper)
         {
