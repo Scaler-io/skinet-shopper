@@ -14,27 +14,20 @@ namespace Skinet.Infrastructure.OrderAggregate
     public class OrderService : IOrderService
     {
 
-        IAsyncRepository<Order> _orderRepo;
-        IAsyncRepository<DeliveryMethod> _deliveryRepo;
-        IAsyncRepository<Product> _productRepo;
-        IBasketService _basketService;
-        ILogger<OrderService> _logger;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IBasketService _basketService;
+        private readonly ILogger<OrderService> _logger;
 
-        public OrderService(IAsyncRepository<Order> orderRepo,
-            IAsyncRepository<DeliveryMethod> deliveryRepo,
-            IAsyncRepository<Product> productRepo,
-            IBasketService basketService, ILogger<OrderService> logger)
+        public OrderService(IUnitOfWork unitOfWork, IBasketService basketService, ILogger<OrderService> logger)
         {
-            _orderRepo = orderRepo;
-            _deliveryRepo = deliveryRepo;
-            _productRepo = productRepo;
-            _basketService = basketService;
             _logger = logger;
+            _basketService = basketService;
+            _unitOfWork = unitOfWork;
         }
 
-        public async Task<Result<Order>> CreateOrderAsync(string buyerEmail, 
-            int deliveryMethodId, 
-            string basketId, 
+        public async Task<Result<Order>> CreateOrderAsync(string buyerEmail,
+            int deliveryMethodId,
+            string basketId,
             Address shippingAddress)
         {
             _logger.Here(nameof(OrderService), nameof(CreateOrderAsync));
@@ -43,27 +36,51 @@ namespace Skinet.Infrastructure.OrderAggregate
 
             _logger.WithBasketId(basket.Id).LogInformation("Cutomer's basket recieved");
 
-            var orderItems = await GetOrderItems(basket);            
+            var orderItems = await GetOrderItems(basket);
 
-            var deliveryMethod = await _deliveryRepo.GetByIdAsync(deliveryMethodId);
+            var deliveryMethod = await _unitOfWork.Repository<DeliveryMethod>().GetByIdAsync(deliveryMethodId);
 
             _logger.DeliverMethodOpted(deliveryMethod.ShortName);
-            
-            var subTotal = orderItems.Sum(i => i.Price * i.Quantity);
-            
-            var finalOrder = new Order(orderItems, buyerEmail, shippingAddress, deliveryMethod, subTotal);
 
+            var subTotal = orderItems.Sum(i => i.Price * i.Quantity);
+
+            var finalOrder = await GenerateFinalOrderAsync(orderItems, buyerEmail, shippingAddress, deliveryMethod, subTotal);
+            
+           if(finalOrder == null){
+               _logger.LogError("Order creation was failed");
+               return Result<Order>.Failure("Something went wrong. Please try again or contact skinet support");
+           }
+    
             _logger.WithOrderId(finalOrder.Id).LogInformation("Final order is ready for checkout");
+
+            await _basketService.DeleteBasketAsync(basketId);
+            
             _logger.Exited();
 
             return Result<Order>.Success(finalOrder);
         }
 
-        private async Task<List<OrderItem>> GetOrderItems(CustomerBasket basket){
+        private async Task<Order> GenerateFinalOrderAsync(List<OrderItem> orderItems,
+            string buyerEmail, 
+            Address shippingAddress,
+            DeliveryMethod deliveryMethod,
+            decimal subTotal)
+        {
+            var order = new Order(orderItems, buyerEmail, shippingAddress, deliveryMethod, subTotal); 
+            _unitOfWork.Repository<Order>().Add(order); 
+            var result = await _unitOfWork.Complete();
+            if(result <= 0)return null;
+            return order;
+        }
+
+        
+        private async Task<List<OrderItem>> GetOrderItems(CustomerBasket basket)
+        {
             var items = new List<OrderItem>();
-            
-            foreach(var item in basket.Items){
-                var productItem = await _productRepo.GetByIdAsync(item.Id);
+
+            foreach (var item in basket.Items)
+            {
+                var productItem = await _unitOfWork.Repository<Product>().GetByIdAsync(item.Id);
                 var itemOrdered = new ProductItemOrdered(productItem.Id, productItem.Name, productItem.PictureUrl);
                 var orderItem = new OrderItem(itemOrdered, productItem.Price, item.Quantity);
                 items.Add(orderItem);
