@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.Extensions.Logging;
 using Skinet.BusinessLogic.Contracts.Infrastructure;
 using Skinet.BusinessLogic.Contracts.Persistence;
 using Skinet.BusinessLogic.Contracts.Persistence.Specifications;
 using Skinet.BusinessLogic.Core;
+using Skinet.BusinessLogic.Core.Dtos.OrderingDtos;
 using Skinet.Entities.Entities;
 using Skinet.Entities.Entities.OrderAggregate;
 using Skinet.Shared.LoggerExtensions;
@@ -18,15 +20,17 @@ namespace Skinet.Infrastructure.OrderAggregate
         private readonly IUnitOfWork _unitOfWork;
         private readonly IBasketService _basketService;
         private readonly ILogger<OrderService> _logger;
+        private readonly IMapper _mapper;
 
-        public OrderService(IUnitOfWork unitOfWork, IBasketService basketService, ILogger<OrderService> logger)
+        public OrderService(IUnitOfWork unitOfWork, IBasketService basketService, ILogger<OrderService> logger, IMapper mapper)
         {
             _logger = logger;
             _basketService = basketService;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public async Task<Result<Order>> CreateOrderAsync(string buyerEmail,
+        public async Task<Result<OrderResponseDto>> CreateOrderAsync(string buyerEmail,
             int deliveryMethodId,
             string basketId,
             Address shippingAddress)
@@ -49,16 +53,18 @@ namespace Skinet.Infrastructure.OrderAggregate
             
            if(finalOrder == null){
                _logger.LogError("Order creation was failed");
-               return Result<Order>.Failure("Something went wrong. Please try again or contact skinet support");
+               return Result<OrderResponseDto>.Failure("Something went wrong. Please try again or contact skinet support");
            }
-    
+
+            var response = _mapper.Map<OrderResponseDto>(finalOrder);
+
             _logger.WithOrderId(finalOrder.Id).LogInformation("Final order is ready for checkout");
 
             await _basketService.DeleteBasketAsync(basketId);
             
             _logger.Exited();
 
-            return Result<Order>.Success(finalOrder);
+            return Result<OrderResponseDto>.Success(response);
         }
 
         private async Task<Order> GenerateFinalOrderAsync(List<OrderItem> orderItems,
@@ -100,34 +106,38 @@ namespace Skinet.Infrastructure.OrderAggregate
             return Result<IReadOnlyList<DeliveryMethod>>.Success(result);
         }
 
-        public async Task<Result<Entities.Entities.OrderAggregate.Order>> GetOrderByIdAsync(int orderId, string buyerEmail)
+        public async Task<Result<OrderResponseDto>> GetOrderByIdAsync(int orderId, string buyerEmail)
         {
             _logger.Here(nameof(OrderService), nameof(GetOrderByIdAsync));
             _logger.WithOrderId(orderId).LogInformation($"Searching for orders of user {buyerEmail}");
 
             var spec = new OrderWithItemsAndOrderingSpecification(orderId, buyerEmail);
 
-            var result = await _unitOfWork.Repository<Order>().GetEntityWithSpec(spec);
+            var order = await _unitOfWork.Repository<Order>().GetEntityWithSpec(spec);
+
+            var result = _mapper.Map<OrderResponseDto>(order);
 
             _logger.LogInformation("Serach result sent back to calling method");
             _logger.Exited();
 
-            return Result<Order>.Success(result);
+            return Result<OrderResponseDto>.Success(result);
         }
 
-        public async Task<Result<IReadOnlyList<Entities.Entities.OrderAggregate.Order>>> GetOrdersForUserAsync(string buyersEmail)
+        public async Task<Result<IReadOnlyList<OrderResponseDto>>> GetOrdersForUserAsync(string buyersEmail)
         {
             _logger.Here(nameof(OrderService), nameof(GetOrdersForUserAsync));
             _logger.LogInformation($"Searching for orders of user {buyersEmail}");
             
             var spec = new OrderWithItemsAndOrderingSpecification(buyersEmail);
 
-            var result = await _unitOfWork.Repository<Order>().ListAsync(spec);
+            var orders = await _unitOfWork.Repository<Order>().ListAsync(spec);
+
+            var result = _mapper.Map<IReadOnlyList<OrderResponseDto>>(orders);
             
             _logger.LogInformation("Serach result sent back to calling method");
             _logger.Exited();
 
-            return Result<IReadOnlyList<Order>>.Success(result);
+            return Result<IReadOnlyList<OrderResponseDto>>.Success(result);
         }
     }
 }

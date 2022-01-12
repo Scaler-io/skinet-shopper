@@ -28,7 +28,7 @@ namespace Skinet.API.Controllers.v2
 
         [Authorize]
         [HttpPost]
-        [ProducesResponseType(typeof(Order), (int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(OrderResponseDto), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(ApiValidationErrorResponse), (int)HttpStatusCode.UnprocessableEntity)]
         [ProducesResponseType(typeof(ApiException), (int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> CreateOrder([FromBody] OrderRequestDto request)
@@ -48,7 +48,7 @@ namespace Skinet.API.Controllers.v2
 
         [Authorize]
         [HttpGet]
-        [ProducesResponseType(typeof(Order), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(OrderResponseDto), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ApiException), (int)HttpStatusCode.InternalServerError)]
