@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Skinet.BusinessLogic.Contracts.Persistence;
 using Skinet.BusinessLogic.Core;
 using Skinet.BusinessLogic.Core.Dtos.TypeDtos;
+using Skinet.Entities.Entities;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,11 +13,11 @@ namespace Skinet.BusinessLogic.Features.Type.Query.GetAllProductTypes
 {
     public class GetAllProductTypesQueryHandler : IRequestHandler<GetAllProductTypesQuery, Result<IReadOnlyList<TypesToReturnDto>>>
     {
-        private readonly IProductTypeRepository _productTypeRepo;
+        private readonly IAsyncRepository<ProductType> _productTypeRepo;
         private readonly ILogger<GetAllProductTypesQueryHandler> _logger;
         private readonly IMapper _mapper;
 
-        public GetAllProductTypesQueryHandler(IProductTypeRepository productTypeRepo, 
+        public GetAllProductTypesQueryHandler(IAsyncRepository<ProductType> productTypeRepo, 
             ILogger<GetAllProductTypesQueryHandler> logger, 
             IMapper mapper)
         {

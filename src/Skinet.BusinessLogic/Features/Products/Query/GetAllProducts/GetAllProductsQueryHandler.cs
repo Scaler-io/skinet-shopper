@@ -13,10 +13,10 @@ namespace Skinet.BusinessLogic.Features.Products.Query.GetAllProducts
 {
     public class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQuery, Result<Pagination<ProductToReturnDto>>>
     {
-        private readonly IProductRepository _productRepo;
+        private readonly IAsyncRepository<Product> _productRepo;
         private readonly IMapper _mapper;
 
-        public GetAllProductsQueryHandler(IProductRepository productRepo,
+        public GetAllProductsQueryHandler(IAsyncRepository<Product> productRepo,
                 IMapper mapper)
         {
             _productRepo = productRepo;
