@@ -10,6 +10,6 @@ namespace Skinet.BusinessLogic.Contracts.Infrastructure
         Task<Result<Order>> CreateOrderAsync(string buyerEmail, int deliveryMethodId, string basketId, Address shippingAddress);
         Task<Result<IReadOnlyList<Order>>> GetOrdersForUserAsync(string buyersEmail);
         Task<Result<Order>> GetOrderByIdAsync(int orderId, string buyerEmail);
-        Task<IReadOnlyList<DeliveryMethod>> GetDeliveryMethodsAsync();
+        Task<Result<IReadOnlyList<DeliveryMethod>>> GetDeliveryMethodsAsync();
     }
 }

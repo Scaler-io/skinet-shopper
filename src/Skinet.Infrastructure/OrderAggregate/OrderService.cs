@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Skinet.BusinessLogic.Contracts.Infrastructure;
 using Skinet.BusinessLogic.Contracts.Persistence;
+using Skinet.BusinessLogic.Contracts.Persistence.Specifications;
 using Skinet.BusinessLogic.Core;
 using Skinet.Entities.Entities;
 using Skinet.Entities.Entities.OrderAggregate;
@@ -89,19 +90,44 @@ namespace Skinet.Infrastructure.OrderAggregate
             return items;
         }
 
-        public Task<IReadOnlyList<DeliveryMethod>> GetDeliveryMethodsAsync()
+        public async Task<Result<IReadOnlyList<DeliveryMethod>>> GetDeliveryMethodsAsync()
         {
-            throw new System.NotImplementedException();
+            _logger.Here(nameof(OrderService), nameof(GetDeliveryMethodsAsync));
+
+            var result = await _unitOfWork.Repository<DeliveryMethod>().ListAllAsync();
+
+            _logger.Exited();
+            return Result<IReadOnlyList<DeliveryMethod>>.Success(result);
         }
 
-        public Task<Result<Entities.Entities.OrderAggregate.Order>> GetOrderByIdAsync(int orderId, string buyerEmail)
+        public async Task<Result<Entities.Entities.OrderAggregate.Order>> GetOrderByIdAsync(int orderId, string buyerEmail)
         {
-            throw new System.NotImplementedException();
+            _logger.Here(nameof(OrderService), nameof(GetOrderByIdAsync));
+            _logger.WithOrderId(orderId).LogInformation($"Searching for orders of user {buyerEmail}");
+
+            var spec = new OrderWithItemsAndOrderingSpecification(orderId, buyerEmail);
+
+            var result = await _unitOfWork.Repository<Order>().GetEntityWithSpec(spec);
+
+            _logger.LogInformation("Serach result sent back to calling method");
+            _logger.Exited();
+
+            return Result<Order>.Success(result);
         }
 
-        public Task<Result<IReadOnlyList<Entities.Entities.OrderAggregate.Order>>> GetOrdersForUserAsync(string buyersEmail)
+        public async Task<Result<IReadOnlyList<Entities.Entities.OrderAggregate.Order>>> GetOrdersForUserAsync(string buyersEmail)
         {
-            throw new System.NotImplementedException();
+            _logger.Here(nameof(OrderService), nameof(GetOrdersForUserAsync));
+            _logger.LogInformation($"Searching for orders of user {buyersEmail}");
+            
+            var spec = new OrderWithItemsAndOrderingSpecification(buyersEmail);
+
+            var result = await _unitOfWork.Repository<Order>().ListAsync(spec);
+            
+            _logger.LogInformation("Serach result sent back to calling method");
+            _logger.Exited();
+
+            return Result<IReadOnlyList<Order>>.Success(result);
         }
     }
 }
