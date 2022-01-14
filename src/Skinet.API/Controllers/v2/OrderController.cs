@@ -13,6 +13,7 @@ using Skinet.Shared.LoggerExtensions;
 
 namespace Skinet.API.Controllers.v2
 {
+    [ApiVersion("2")]
     public class OrderController : BaseController
     {
         private readonly IOrderService _orderService;
@@ -66,7 +67,7 @@ namespace Skinet.API.Controllers.v2
 
         [Authorize]
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(Order), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(OrderResponseDto), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ApiException), (int)HttpStatusCode.InternalServerError)]
@@ -82,8 +83,9 @@ namespace Skinet.API.Controllers.v2
             return HandleResult(order);
         }
 
+        [Authorize]
         [HttpGet("deliveryMethods")]
-        [ProducesResponseType(typeof(DeliveryMethod), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(DeliveryMethodDto), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ApiException), (int)HttpStatusCode.InternalServerError)]

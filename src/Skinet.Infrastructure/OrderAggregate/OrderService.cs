@@ -96,14 +96,16 @@ namespace Skinet.Infrastructure.OrderAggregate
             return items;
         }
 
-        public async Task<Result<IReadOnlyList<DeliveryMethod>>> GetDeliveryMethodsAsync()
+        public async Task<Result<IReadOnlyList<DeliveryMethodDto>>> GetDeliveryMethodsAsync()
         {
             _logger.Here(nameof(OrderService), nameof(GetDeliveryMethodsAsync));
 
-            var result = await _unitOfWork.Repository<DeliveryMethod>().ListAllAsync();
+            var deliveryMethods = await _unitOfWork.Repository<DeliveryMethod>().ListAllAsync();
+
+            var result = _mapper.Map<IReadOnlyList<DeliveryMethodDto>>(deliveryMethods);
 
             _logger.Exited();
-            return Result<IReadOnlyList<DeliveryMethod>>.Success(result);
+            return Result<IReadOnlyList<DeliveryMethodDto>>.Success(result);
         }
 
         public async Task<Result<OrderResponseDto>> GetOrderByIdAsync(int orderId, string buyerEmail)
