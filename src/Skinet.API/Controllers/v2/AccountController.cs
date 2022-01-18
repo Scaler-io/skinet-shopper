@@ -95,9 +95,10 @@ namespace Skinet.API.Controllers.v2
 
             var result = await _authService.GetUserAddressAsync();
 
+            
             _logger.Exited();
 
-            return HandleResult(result);
+            return Ok(result.Value);
         }
 
         [Authorize]
