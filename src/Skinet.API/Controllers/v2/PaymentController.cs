@@ -8,7 +8,7 @@ using Skinet.Shared.LoggerExtensions;
 namespace Skinet.API.Controllers.v2
 {
 
-    [ApiVersion("2")]
+   [ApiVersion("2")]
     public class PaymentController : BaseController
     {
         private readonly IPaymentService _paymentService;
