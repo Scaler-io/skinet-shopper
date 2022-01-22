@@ -44,6 +44,12 @@ namespace Skinet.Infrastructure.Payment
         StripeConfiguration.ApiKey = _config["StripeSettings:SecretKey"];
 
         var basket = (await _basketService.GetBasketAsync(basketId)).Value;
+
+        if(basket.Items.Count() == 0) { 
+            _logger.WithBasketId(basketId).LogInformation("No basket was found in db");
+            return Result<CustomerBasketDto>.Failure($"No basket was found with id {basketId}");
+        }
+
         var shippingPrice = 0m;
         
         if(basket.DeliveryMethodId.HasValue){
