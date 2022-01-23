@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Serilog;
 using Skinet.API.Extensions;
 using Skinet.Entities.Entities.Identity;
 using Skinet.Persistence;
@@ -17,28 +18,38 @@ namespace Skinet.API
     {
         public static async Task Main(string[] args)
         {
-            var host = CreateHostBuilder(args).Build();
+            try{
+                ConfigureLogger();
+                var host = CreateHostBuilder(args).Build();
 
-            // Migrates any pending migrations
-            await MigrateStoreContextAsync(host);
-            await MigrateIdentityContextAsync(host);
+                // Migrates any pending migrations
+                await MigrateStoreContextAsync(host);
+                await MigrateIdentityContextAsync(host);
 
-            // Seeds data to storecontext
-            SeedStoreContext(host);
+                // Seeds data to storecontext
+                SeedStoreContext(host);
 
-            // Seeds data to identitycontext
-            SeedIdentityContext(host);
+                // Seeds data to identitycontext
+                SeedIdentityContext(host);
 
-            await host.RunAsync();
+                await host.RunAsync();
+            }finally{
+                Log.CloseAndFlush();
+            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseStartup<Startup>().UseSerilog();
                 });
 
+        private static void ConfigureLogger(){
+            Log.Logger = new LoggerConfiguration()
+                            .WriteTo.Console(outputTemplate: "{Timestamp:yyyy-mm-dd hh:mm:ss} {Message} {Exception:1} {NewLine}")
+                            .CreateLogger();
+        }
 
         private static async Task MigrateStoreContextAsync(IHost host)
         {

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System.Text.Json;
+using Microsoft.Extensions.Logging;
 
 namespace Skinet.Shared.LoggerExtensions
 {
@@ -34,6 +35,14 @@ namespace Skinet.Shared.LoggerExtensions
         public static ILogger WithId(this ILogger logger, object id)
         {
             logger.LogInformation($"With id {id}");
+            return logger;
+        }
+
+        public static ILogger WithData(this ILogger logger, object data)
+        {
+            var deserializedObject = JsonSerializer.Serialize<object>(data);
+
+            logger.LogInformation($"\nWith data {deserializedObject}");
             return logger;
         }
     }

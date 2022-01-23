@@ -11,6 +11,7 @@ using Skinet.BusinessLogic.Validators;
 using Skinet.Infrastructure.Basket;
 using Skinet.Infrastructure.Identity;
 using Skinet.Infrastructure.OrderAggregate;
+using Skinet.Infrastructure.Payment;
 using Skinet.Persistence;
 using Skinet.Persistence.Repositories;
 using System.Linq;
@@ -40,6 +41,7 @@ namespace Skinet.API.Extensions
             services.AddScoped(typeof(IAsyncRepository<>), typeof(BaseRepository<>));
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IPaymentService, PaymentService>();
 
             //  MediatR support
             services.AddMediatR(typeof(GetAllProductsQuery).Assembly);

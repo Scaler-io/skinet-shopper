@@ -19,13 +19,19 @@ namespace Skinet.Infrastructure.OrderAggregate
 
         private readonly IUnitOfWork _unitOfWork;
         private readonly IBasketService _basketService;
+        private readonly IPaymentService _paymentService;
         private readonly ILogger<OrderService> _logger;
         private readonly IMapper _mapper;
 
-        public OrderService(IUnitOfWork unitOfWork, IBasketService basketService, ILogger<OrderService> logger, IMapper mapper)
+        public OrderService(IUnitOfWork unitOfWork, 
+            IBasketService basketService, 
+            IPaymentService paymentService,
+            ILogger<OrderService> logger, 
+            IMapper mapper)
         {
             _logger = logger;
             _basketService = basketService;
+            _paymentService = paymentService;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
@@ -49,7 +55,8 @@ namespace Skinet.Infrastructure.OrderAggregate
 
             var subTotal = orderItems.Sum(i => i.Price * i.Quantity);
 
-            var finalOrder = await GenerateFinalOrderAsync(orderItems, buyerEmail, shippingAddress, deliveryMethod, subTotal);
+            var finalOrder = await GenerateFinalOrderAsync(orderItems, 
+                buyerEmail, shippingAddress, deliveryMethod, subTotal, basket);
             
            if(finalOrder == null){
                _logger.LogError("Order creation was failed");
@@ -71,9 +78,19 @@ namespace Skinet.Infrastructure.OrderAggregate
             string buyerEmail, 
             Address shippingAddress,
             DeliveryMethod deliveryMethod,
-            decimal subTotal)
+            decimal subTotal,
+            CustomerBasket basket)
         {
-            var order = new Order(orderItems, buyerEmail, shippingAddress, deliveryMethod, subTotal); 
+
+            var spec = new OrderByPaymentIntentIdWithItemsSpecification(basket.PaymentIntentId);
+            var existingOrder = await _unitOfWork.Repository<Order>().GetEntityWithSpec(spec);
+
+            if(existingOrder != null){
+                _unitOfWork.Repository<Order>().Delete(existingOrder);
+                await _paymentService.CreateOrUpdatePaymentIntent(basket.Id);
+            }
+
+            var order = new Order(orderItems, buyerEmail, shippingAddress, deliveryMethod, subTotal, basket.PaymentIntentId); 
             _unitOfWork.Repository<Order>().Add(order); 
             var result = await _unitOfWork.Complete();
             if(result <= 0)return null;
